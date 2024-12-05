@@ -19,7 +19,7 @@ const FlippableCard = ({ front, back }: FlippableCardProps) => {
   });
 
   const handleClick = () => {
-    setIsShown(!isShown);
+    setIsShown((prev) => !prev);
   };
 
   return (
