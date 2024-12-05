@@ -1,8 +1,15 @@
+import { BrowserRouter, Route, Routes } from "react-router";
+import Home from "./pages/home/Home";
+import Tarot2DPage from "./pages/2D/2DPage";
+
 function App() {
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold underline">The Tarot Experience</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/2d" element={<Tarot2DPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
