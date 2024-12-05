@@ -14,7 +14,7 @@ const FlippableCard = ({ front, back }: FlippableCardProps) => {
 
   const { transform, opacity } = useSpring({
     opacity: isShown ? 1 : 0,
-    transform: `perspective(${CARD_WIDTH + 500}px) rotateY(${isShown ? 180 : 0}deg)`,
+    transform: `perspective(${CARD_WIDTH + 500}px) rotateY(${isShown ? -180 : 0}deg)`,
     config: { mass: 5, tension: 500, friction: 80 },
   });
 
@@ -24,7 +24,11 @@ const FlippableCard = ({ front, back }: FlippableCardProps) => {
 
   return (
     <div
-      className={`relative h-[${CARD_HEIGHT}px] w-[${CARD_WIDTH}px] cursor-pointer`}
+      className={`relative cursor-pointer`}
+      style={{
+        width: CARD_WIDTH,
+        height: CARD_HEIGHT,
+      }}
       onClick={handleClick}
     >
       <animated.div
@@ -42,7 +46,7 @@ const FlippableCard = ({ front, back }: FlippableCardProps) => {
         className="absolute flex h-full w-full items-center justify-center rounded-lg bg-gradient-to-br from-red-400 to-yellow-400 text-white shadow-lg"
         style={{
           opacity,
-          transform: transform.to((t) => `${t} rotateY(180deg)`),
+          transform: transform.to((t) => `${t} rotateY(-180deg)`),
           willChange: "transform, opacity",
         }}
       >
