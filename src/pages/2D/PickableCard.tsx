@@ -30,24 +30,21 @@ const PickableCard = () => {
     },
   }));
 
-  const moveUp = () => {
-    if (isSelected) return;
+  const animateCardUp = () => {
     positionSpringApi.start({
       from: { y: DEFAULT_POSITION },
       to: { y: UP_POSITION },
     });
   };
 
-  const moveDown = () => {
-    if (isSelected) return;
+  const animateCardDown = () => {
     positionSpringApi.start({
       from: { y: UP_POSITION },
       to: { y: DEFAULT_POSITION },
     });
   };
 
-  const handleClick = () => {
-    setIsSelected((prev) => !prev);
+  const animateCardColor = () => {
     colorSpringApi.start({
       from: {
         gradientFrom: isSelected ? FRONT_GRADIENT.from : BACK_GRADIENT.from,
@@ -60,6 +57,21 @@ const PickableCard = () => {
     });
   };
 
+  const handleMouseEnter = () => {
+    if (isSelected) return;
+    animateCardUp();
+  };
+
+  const handleMouseLeave = () => {
+    if (isSelected) return;
+    animateCardDown();
+  };
+
+  const handleClick = () => {
+    setIsSelected((prev) => !prev);
+    animateCardColor();
+  };
+
   return (
     <animated.div
       className={`relative cursor-pointer`}
@@ -69,8 +81,8 @@ const PickableCard = () => {
         ...positionSprings,
         willChange: "transform",
       }}
-      onMouseEnter={moveUp}
-      onMouseLeave={moveDown}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       onClick={handleClick}
     >
       <animated.div
