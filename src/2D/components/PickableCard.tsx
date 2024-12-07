@@ -1,5 +1,4 @@
 import { animated, useSpring } from "@react-spring/web";
-import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 export const CARD_ASPECT_RATIO = 1.5;
@@ -22,13 +21,16 @@ const BACK_GRADIENT = {
 interface PickableCardProps {
   width?: number;
   height?: number;
+  isSelected: boolean;
+  isPickable: boolean;
 }
 
 const PickableCard = ({
   width = DEFAULT_WIDTH,
   height = DEFAULT_HEIGHT,
+  isSelected,
+  isPickable,
 }: PickableCardProps) => {
-  const [isSelected, setIsSelected] = useState(false);
   const [positionSprings, positionSpringApi] = useSpring(() => ({
     from: { y: isSelected ? UP_POSITION : DEFAULT_POSITION },
   }));
@@ -67,17 +69,17 @@ const PickableCard = ({
   };
 
   const handleMouseEnter = () => {
-    if (isSelected) return;
+    if (isSelected || !isPickable) return;
     animateCardUp();
   };
 
   const handleMouseLeave = () => {
-    if (isSelected) return;
+    if (isSelected || !isPickable) return;
     animateCardDown();
   };
 
   const handleClick = () => {
-    setIsSelected((prev) => !prev);
+    if (!isSelected && !isPickable) return;
     animateCardColor();
   };
 
@@ -106,7 +108,7 @@ const PickableCard = ({
           willChange: "background",
         }}
       >
-        <div>🌟</div>
+        {/* <div>🌟</div> */}
       </animated.div>
     </animated.div>
   );

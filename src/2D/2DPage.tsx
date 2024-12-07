@@ -31,6 +31,7 @@ const getCardWidth = (windowWidth: number) => {
 };
 
 const Tarot2DPage = () => {
+  // Layouting
   const windowWidth = window.innerWidth;
   const [cardWidth, setCardWidth] = useState(getCardWidth(windowWidth));
   const [cardHeight, setCardHeight] = useState(cardWidth * CARD_ASPECT_RATIO);
@@ -53,8 +54,20 @@ const Tarot2DPage = () => {
     return () => window.removeEventListener("resize", recalculateSizes);
   }, []);
 
+  // Logic
+  const MAX_SELECTIONS = 3;
+  const [selectedCards, setSelectedCards] = useState<number[]>([]);
+
+  const onCardClick = (cardId: number) => () => {
+    if (selectedCards.includes(cardId)) {
+      setSelectedCards(selectedCards.filter((id) => id !== cardId));
+    } else if (selectedCards.length < MAX_SELECTIONS) {
+      setSelectedCards([...selectedCards, cardId]);
+    }
+  };
+
   return (
-    <div className="flex h-screen w-screen">
+    <div className="flex h-screen w-screen flex-col">
       <div className="mx-2 mt-8 w-full">
         <div
           style={{
@@ -69,11 +82,25 @@ const Tarot2DPage = () => {
               key={card.id}
               className="flex flex-col items-center"
               style={{ marginTop: -cardHeight * OVERLAP_MARGIN }}
+              onClick={onCardClick(card.id)}
             >
-              <PickableCard width={cardWidth} height={cardHeight} />
+              <PickableCard
+                width={cardWidth}
+                height={cardHeight}
+                isSelected={selectedCards.includes(card.id)}
+                isPickable={selectedCards.length < MAX_SELECTIONS}
+              />
             </div>
           ))}
         </div>
+      </div>
+      <div className="mt-8 flex items-center justify-center">
+        <button
+          disabled={selectedCards.length < MAX_SELECTIONS}
+          className="rounded bg-gradient-to-r from-emerald-400 to-sky-500 px-10 py-3 font-semibold text-white hover:opacity-80 disabled:opacity-20"
+        >
+          🔮
+        </button>
       </div>
     </div>
   );
