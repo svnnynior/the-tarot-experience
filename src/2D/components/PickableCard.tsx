@@ -2,8 +2,9 @@ import { animated, useSpring } from "@react-spring/web";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-const CARD_WIDTH = 120;
-const CARD_HEIGHT = 200;
+export const CARD_ASPECT_RATIO = 1.5;
+const DEFAULT_WIDTH = 120;
+const DEFAULT_HEIGHT = DEFAULT_WIDTH * CARD_ASPECT_RATIO;
 
 const UP_POSITION = -20;
 const DEFAULT_POSITION = 0;
@@ -18,7 +19,15 @@ const BACK_GRADIENT = {
   to: "#a855f7", // purple-500
 };
 
-const PickableCard = () => {
+interface PickableCardProps {
+  width?: number;
+  height?: number;
+}
+
+const PickableCard = ({
+  width = DEFAULT_WIDTH,
+  height = DEFAULT_HEIGHT,
+}: PickableCardProps) => {
   const [isSelected, setIsSelected] = useState(false);
   const [positionSprings, positionSpringApi] = useSpring(() => ({
     from: { y: isSelected ? UP_POSITION : DEFAULT_POSITION },
@@ -76,8 +85,8 @@ const PickableCard = () => {
     <animated.div
       className={`relative cursor-pointer`}
       style={{
-        width: CARD_WIDTH,
-        height: CARD_HEIGHT,
+        width,
+        height,
         ...positionSprings,
         willChange: "transform",
       }}
