@@ -1,6 +1,7 @@
-import { TAROT_DECK } from "./data/cards";
-import PickableCard, { CARD_ASPECT_RATIO } from "./components/PickableCard";
+import { TAROT_DECK } from "../data/cards";
+import PickableCard, { CARD_ASPECT_RATIO } from "../components/PickableCard";
 import { useLayoutEffect, useState } from "react";
+import FlippableCard from "../components/FlippableCard";
 
 const TAILWIND_SCREEN_BREAKPOINTS = {
   sm: 640,
@@ -30,7 +31,7 @@ const getCardWidth = (windowWidth: number) => {
   return CARD_WIDTH_BREAKPOINTS.xl;
 };
 
-const Tarot2DPage = () => {
+const ShowcasePage = () => {
   // Layouting
   const windowWidth = window.innerWidth;
   const [cardWidth, setCardWidth] = useState(getCardWidth(windowWidth));
@@ -102,8 +103,11 @@ const Tarot2DPage = () => {
           🔮
         </button>
       </div>
+      <div className="mt-8 flex items-center justify-center">
+        <FlippableCard front={<div>Front</div>} back={<div>Back</div>} />
+      </div>
     </div>
   );
 };
 
-export default Tarot2DPage;
+export default ShowcasePage;
